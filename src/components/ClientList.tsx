@@ -235,7 +235,7 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onSelectClient,
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className="text-[10px] font-black uppercase text-brand-900 block mb-2 tracking-widest">WhatsApp</label>
-                          <input required className="w-full p-4 bg-gray-50 border border-gray-200 rounded-2xl font-bold outline-none focus:bg-white" placeholder="(00) 00000-0000" value={formData.phone} onChange={e => setFormData({...formData, phone: formatPhone(e.target.value)})} />
+                          <input required className="w-full p-4 bg-gray-50 border border-gray-200 rounded-2xl font-bold outline-none focus:bg-white" placeholder="(00) 00000-0000 ou +33..." value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
                         </div>
                         <div>
                           <label className="text-[10px] font-black uppercase text-brand-900 block mb-2 tracking-widest">Nº PRGD</label>
