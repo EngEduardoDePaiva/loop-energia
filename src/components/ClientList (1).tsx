@@ -34,7 +34,7 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onSelectClient,
   const [pendingTransition, setPendingTransition] = useState<PendingTransition | null>(null);
   
   const [formData, setFormData] = useState<Partial<Client> & { deliveryDate?: string }>({
-    name: '', clientNumber: '', prgd: '', phone: '', currentStageId: STAGES[0].id, deliveryDate: ''
+    name: '', clientNumber: '', prgd: '', phone: '+55', currentStageId: STAGES[0].id, deliveryDate: ''
   });
 
   const formatPhone = (value: string) => {
@@ -103,9 +103,9 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onSelectClient,
     if (!client.phone) return;
     const combinedData = { ...(client.stageData || {}), ...additionalData };
     const generated = generateTemplateContent(stage, client, combinedData);
-    const isInternational = client.phone.trim().startsWith('+');
-    const cleanPhone = client.phone.replace(/\D/g, '');
-    const phoneWithCountry = isInternational ? cleanPhone : (cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`);
+    const rawPhone = client.phone.trim();
+    const cleanPhone = rawPhone.replace(/\D/g, '');
+    const phoneWithCountry = rawPhone.startsWith('+') ? cleanPhone : (cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`);
     window.open(`https://api.whatsapp.com/send?phone=${phoneWithCountry}&text=${encodeURIComponent(generated.body)}`, '_blank');
   };
 
