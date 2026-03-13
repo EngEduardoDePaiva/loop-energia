@@ -55,8 +55,9 @@ export default function App() {
       const selectedStage = STAGES.find(s => s.id === initialStageId);
       if (selectedStage && selectedStage.template && savedClient.phone) {
         const generated = generateTemplateContent(selectedStage, savedClient, savedClient.stageData || {});
-        const cleanPhone = savedClient.phone.replace(/\D/g, '');
-        const phoneWithCountry = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
+        const rawPhone = savedClient.phone.trim();
+        const cleanPhone = rawPhone.replace(/\D/g, '');
+        const phoneWithCountry = rawPhone.startsWith('+') ? cleanPhone : (cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`);
         const encodedText = encodeURIComponent(generated.body);
         window.open(`https://api.whatsapp.com/send?phone=${phoneWithCountry}&text=${encodedText}`, '_blank');
       }
@@ -144,8 +145,9 @@ export default function App() {
       const selectedStage = STAGES.find(s => s.id === newStageId);
       if (selectedStage && selectedStage.template && updatedClient.phone) {
         const generated = generateTemplateContent(selectedStage, updatedClient, updatedData);
-        const cleanPhone = updatedClient.phone.replace(/\D/g, '');
-        const phoneWithCountry = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
+        const rawPhone = updatedClient.phone.trim();
+        const cleanPhone = rawPhone.replace(/\D/g, '');
+        const phoneWithCountry = rawPhone.startsWith('+') ? cleanPhone : (cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`);
         const encodedText = encodeURIComponent(generated.body);
         window.open(`https://api.whatsapp.com/send?phone=${phoneWithCountry}&text=${encodedText}`, '_blank');
       }
