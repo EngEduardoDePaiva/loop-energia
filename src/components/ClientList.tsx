@@ -104,8 +104,8 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onSelectClient,
     const combinedData = { ...(client.stageData || {}), ...additionalData };
     const generated = generateTemplateContent(stage, client, combinedData);
     const rawPhone = client.phone.trim();
-    const cleanPhone = rawPhone.replace(/\D/g, '');
-    const phoneWithCountry = rawPhone.startsWith('+') ? cleanPhone : (cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`);
+    const digitsOnly = rawPhone.replace(/\D/g, '');
+    const phoneWithCountry = rawPhone.startsWith('+') ? digitsOnly : (digitsOnly.startsWith('55') ? digitsOnly : `55${digitsOnly}`);
     window.open(`https://api.whatsapp.com/send?phone=${phoneWithCountry}&text=${encodeURIComponent(generated.body)}`, '_blank');
   };
 
