@@ -34,24 +34,19 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onSelectClient,
   const [pendingTransition, setPendingTransition] = useState<PendingTransition | null>(null);
   
   const [formData, setFormData] = useState<Partial<Client> & { deliveryDate?: string }>({
-    name: '', clientNumber: '', prgd: '', phone: '+55', currentStageId: STAGES[0].id, deliveryDate: ''
+    name: '', clientNumber: '', prgd: '', phone: '', currentStageId: STAGES[0].id, deliveryDate: ''
   });
 
   const formatPhone = (value: string) => {
     if (!value) return "";
+    // Internacional: deixa livre
     if (value.startsWith('+') && !value.startsWith('+55')) return value;
-    if (value.startsWith('+55')) {
-      const digits = value.replace(/\D/g, "").substring(2, 13);
-      if (digits.length > 10) return `+55 (${digits.substring(0,2)}) ${digits.substring(2,7)}-${digits.substring(7,11)}`;
-      if (digits.length > 6) return `+55 (${digits.substring(0,2)}) ${digits.substring(2,6)}-${digits.substring(6)}`;
-      if (digits.length > 2) return `+55 (${digits.substring(0,2)}) ${digits.substring(2)}`;
-      return `+55 ${digits}`;
-    }
-    const digits = value.replace(/\D/g, "").substring(0, 11);
-    if (digits.length > 10) return `+55 (${digits.substring(0,2)}) ${digits.substring(2,7)}-${digits.substring(7,11)}`;
-    if (digits.length > 6) return `+55 (${digits.substring(0,2)}) ${digits.substring(2,6)}-${digits.substring(6)}`;
-    if (digits.length > 2) return `+55 (${digits.substring(0,2)}) ${digits.substring(2)}`;
-    return value;
+    // Brasileiro: aplica mascara (62) 99999-9999
+    const digits = value.replace(/\D/g, "").replace(/^55/, "").substring(0, 11);
+    if (digits.length > 10) return `(${digits.substring(0,2)}) ${digits.substring(2,7)}-${digits.substring(7,11)}`;
+    if (digits.length > 6) return `(${digits.substring(0,2)}) ${digits.substring(2,6)}-${digits.substring(6)}`;
+    if (digits.length > 2) return `(${digits.substring(0,2)}) ${digits.substring(2)}`;
+    return digits;
   };
 
   const formatPRGD = (value: string) => {
@@ -243,7 +238,7 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onSelectClient,
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className="text-[10px] font-black uppercase text-brand-900 block mb-2 tracking-widest">WhatsApp</label>
-                          <input required className="w-full p-4 bg-gray-50 border border-gray-200 rounded-2xl font-bold outline-none focus:bg-white" placeholder="(00) 00000-0000 ou +33..." value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
+                          <input required className="w-full p-4 bg-gray-50 border border-gray-200 rounded-2xl font-bold outline-none focus:bg-white" placeholder="(62) 99999-9999 ou +33..." value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
                         </div>
                         <div>
                           <label className="text-[10px] font-black uppercase text-brand-900 block mb-2 tracking-widest">Nº PRGD</label>
