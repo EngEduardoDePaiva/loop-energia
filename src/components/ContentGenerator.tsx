@@ -74,8 +74,9 @@ export const ContentGenerator: React.FC<ContentGeneratorProps> = ({ stage, clien
   const handleWhatsApp = () => {
     if (!validateFields()) return;
 
-    const clean = client.phone.replace(/\D/g, '');
-    const phoneWithCountry = clean.startsWith('55') ? clean : '55'+clean;
+    const rawPhone = client.phone.trim();
+    const clean = rawPhone.replace(/\D/g, '');
+    const phoneWithCountry = rawPhone.startsWith('+') ? clean : (clean.startsWith('55') ? clean : `55${clean}`);
     window.open(`https://api.whatsapp.com/send?phone=${phoneWithCountry}&text=${encodeURIComponent(editableBody)}`, '_blank');
   };
 
