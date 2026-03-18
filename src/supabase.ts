@@ -1,32 +1,8 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://inxziqcwtatkhquyzfsy.supabase.co';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_n8CfdV-v12ty9kLBE748EQ_7XeNu0lz';
 
-export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
+export const isSupabaseConfigured = true;
 
-let supabaseInstance: SupabaseClient | null = null;
-
-export const getSupabase = (): SupabaseClient => {
-  if (!supabaseInstance) {
-    if (!supabaseUrl || !supabaseAnonKey) {
-      console.error('Supabase credentials missing.');
-      try {
-        return createClient('https://placeholder.supabase.co', 'placeholder');
-      } catch (e) {
-        console.error('Failed to create placeholder Supabase client:', e);
-        return {} as any;
-      }
-    }
-    try {
-      supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
-    } catch (e) {
-      console.error('Failed to create Supabase client:', e);
-      return {} as any;
-    }
-  }
-  return supabaseInstance!;
-};
-
-// Exportamos a instância diretamente para compatibilidade, mas com tratamento de erro
-export const supabase = getSupabase();
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
